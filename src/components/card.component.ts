@@ -43,7 +43,7 @@ import { TarotCard } from '../services/tarot.service';
               } @else {
                 <div class="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-gradient-to-b from-[#1a0f2e] to-black">
                    <div class="w-12 h-12 border-2 border-t-[#D4AF37] border-transparent rounded-full animate-spin"></div>
-                   <span class="text-[10px] uppercase tracking-[0.3em] text-[#D4AF37] animate-pulse">Design manifesting...</span>
+                   <span class="text-[10px] uppercase tracking-[0.3em] text-[#D4AF37] animate-pulse">Designing Arcana...</span>
                 </div>
               }
               
