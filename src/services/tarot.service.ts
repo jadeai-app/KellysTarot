@@ -71,7 +71,7 @@ export class TarotService {
 
   async generateCardImage(card: TarotCard): Promise<string> {
     try {
-      const prompt = `A mystical and divine tarot card illustration of "${card.traditionalName}". Highly detailed occult symbolism, gold filigree borders, ethereal glowing cosmic energy background. Intricate line art, professional oracle deck aesthetic, 4k, surreal spiritual art. Keywords: ${card.keywords.join(', ')}.`;
+      const prompt = `A mystical tarot card design illustration for "${card.traditionalName}". Highly detailed occult symbolism, gold filigree line art borders, ethereal glowing cosmic energy background. Professional oracle deck aesthetic, 4k resolution, surreal spiritual art. Deep royal colors. Keywords: ${card.keywords.join(', ')}.`;
       
       const response = await this.ai.models.generateImages({
         model: 'imagen-4.0-generate-001',
