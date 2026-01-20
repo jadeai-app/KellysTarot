@@ -11,15 +11,7 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: 'dist',
       emptyOutDir: true,
-      target: 'es2022',
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            angular: ['@angular/core', '@angular/common', '@angular/platform-browser'],
-            genai: ['@google/genai']
-          }
-        }
-      }
+      target: 'es2022'
     },
     optimizeDeps: {
       include: ['@angular/common', '@angular/core', 'rxjs']

@@ -1,3 +1,4 @@
+
 {
   "compilerOptions": {
     "baseUrl": "./",
@@ -24,5 +25,5 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "*.ts"]
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "*.ts", "index.tsx"]
 }
