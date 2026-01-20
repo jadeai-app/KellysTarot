@@ -1,5 +1,6 @@
+
 import { Component, input, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { TarotCard } from '../services/tarot.service';
 
 @Component({
@@ -31,44 +32,45 @@ import { TarotCard } from '../services/tarot.service';
         <!-- CARD FRONT -->
         <div class="absolute w-full h-full backface-hidden rotate-y-180 rounded-xl bg-[#F5F1E8] text-[#2D1B4E] overflow-hidden border-[4px] border-[#D4AF37] flex flex-col shadow-2xl">
            <!-- Holographic Sheen Layer -->
-           <div class="absolute inset-0 z-30 opacity-20 pointer-events-none group-hover:opacity-40 transition-opacity duration-700 bg-[linear-gradient(110deg,transparent_25%,rgba(255,255,255,0.4)_50%,transparent_75%)] bg-[length:250%_100%] animate-[holo-sheen_3s_linear_infinite]"></div>
+           <div class="absolute inset-0 z-30 opacity-10 group-hover:opacity-30 pointer-events-none transition-opacity duration-700 bg-[linear-gradient(110deg,transparent_25%,rgba(255,255,255,0.4)_50%,transparent_75%)] bg-[length:250%_100%] animate-[holo-sheen_3s_linear_infinite]"></div>
            
-           <div class="absolute inset-1 border border-[#2D1B4E]/20 rounded-lg pointer-events-none z-20"></div>
-
            <!-- Art Section -->
-           <div class="h-[70%] w-full relative overflow-hidden border-b-4 border-[#D4AF37] bg-slate-200">
-              <div class="absolute inset-0 transition-transform duration-1000" 
-                   [style.background]="getGradient(card())"></div>
+           <div class="h-[75%] w-full relative overflow-hidden border-b-2 border-[#D4AF37]/50 bg-[#030205]">
+              @if (card().imageUrl) {
+                <img [src]="card().imageUrl" 
+                     class="w-full h-full object-cover transition-transform duration-1000"
+                     [class.rotate-180]="card().isReversed"
+                     [alt]="card().title">
+              } @else {
+                <div class="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-gradient-to-b from-[#1a0f2e] to-black">
+                   <span class="text-4xl md:text-6xl text-[#D4AF37] opacity-40 animate-pulse">✦</span>
+                   <span class="text-[10px] uppercase tracking-widest text-[#D4AF37]/40">Materializing...</span>
+                </div>
+              }
               
-              <div class="absolute inset-0 opacity-40 bg-[url('https://www.transparenttextures.com/patterns/canvas-orange.png')] mix-blend-multiply"></div>
-
-              <div class="absolute inset-0 flex items-center justify-center transition-transform duration-1000"
-                   [class.rotate-180]="card().isReversed">
-                 <span class="font-cinzel text-6xl md:text-9xl text-white opacity-95 drop-shadow-[0_4px_6px_rgba(0,0,0,0.3)] transform scale-110 group-hover:scale-125 transition-transform duration-1000">
-                    {{ getSuitIcon(card().suit) }}
-                 </span>
-              </div>
-
+              <!-- Traditional Roman Numeral Badge -->
               @if(getRomanNumeral(card().id); as roman) {
-                <div class="absolute top-2 md:top-3 w-full flex justify-center z-10">
-                   <div class="bg-[#1a0f2e]/90 backdrop-blur-md px-2 py-0.5 md:px-3 rounded-full border border-[#D4AF37] shadow-lg">
-                      <span class="text-[#D4AF37] font-cinzel text-[9px] md:text-xs font-bold tracking-widest">{{ roman }}</span>
+                <div class="absolute top-2 w-full flex justify-center z-10">
+                   <div class="bg-black/60 backdrop-blur-md px-3 py-0.5 rounded-full border border-[#D4AF37]/50">
+                      <span class="text-[#D4AF37] font-cinzel text-[10px] font-bold tracking-widest">{{ roman }}</span>
                    </div>
                 </div>
               }
            </div>
 
            <!-- Text Section -->
-           <div class="h-[30%] bg-[#F5F1E8] flex flex-col items-center justify-center p-1.5 md:p-3 relative text-center z-10">
-              <h3 class="font-cinzel font-extrabold text-sm md:text-xl leading-tight text-[#2D1B4E] uppercase tracking-wide mb-1 px-1 line-clamp-2">
+           <div class="h-[25%] bg-[#F5F1E8] flex flex-col items-center justify-center p-3 text-center z-10">
+              <h3 class="font-cinzel font-extrabold text-sm md:text-lg leading-tight text-[#2D1B4E] uppercase tracking-wide mb-1 px-1">
                 {{ card().title }}
               </h3>
-              
-              <div class="flex items-center justify-center gap-1.5 w-full opacity-70">
-                 <div class="h-[1px] bg-[#2D1B4E] w-2 md:w-4"></div>
-                 <p class="font-lato text-[10px] md:text-xs font-bold uppercase tracking-[0.15em] text-[#2D1B4E] whitespace-nowrap">{{ card().traditionalName }}</p>
-                 <div class="h-[1px] bg-[#2D1B4E] w-2 md:w-4"></div>
+              <div class="flex items-center justify-center gap-2 opacity-60">
+                 <div class="h-px w-4 bg-[#2D1B4E]"></div>
+                 <p class="font-lato text-[9px] font-bold uppercase tracking-widest text-[#2D1B4E]">{{ card().traditionalName }}</p>
+                 <div class="h-px w-4 bg-[#2D1B4E]"></div>
               </div>
+              @if (card().isReversed) {
+                <span class="text-[8px] font-bold text-red-800 uppercase tracking-widest mt-1">Reversed</span>
+              }
            </div>
         </div>
       </div>
@@ -81,15 +83,11 @@ import { TarotCard } from '../services/tarot.service';
     .transform-style-3d { transform-style: preserve-3d; }
     @keyframes flip-reveal-3d {
       0% { transform: rotateY(0deg) scale(1); }
-      30% { transform: rotateY(90deg) scale(1.25) translateZ(80px); }
+      30% { transform: rotateY(90deg) scale(1.15) translateZ(50px); }
       100% { transform: rotateY(180deg) scale(1); }
     }
     .animate-flip-reveal {
       animation: flip-reveal-3d 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-    }
-    @keyframes holo-sheen {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
     }
   `]
 })
@@ -97,32 +95,6 @@ export class CardComponent {
   card = input.required<TarotCard>();
   revealed = input<boolean>(false);
   animateFlip = input<boolean>(false);
-
-  getGradient(card: TarotCard): string {
-    const gradients = [
-      'linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%)',
-      'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
-      'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)',
-      'linear-gradient(135deg, #fccb90 0%, #d57eeb 100%)',
-      'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)',
-      'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-    ];
-    if (card.suit === 'Major') {
-       return 'radial-gradient(circle at top right, #4B0082, #1a0f2e)'; 
-    }
-    return gradients[card.id % gradients.length] || gradients[0];
-  }
-
-  getSuitIcon(suit: string): string {
-    switch(suit) {
-      case 'Major': return '❂'; 
-      case 'Cups': return '🜄'; 
-      case 'Swords': return '🜁'; 
-      case 'Wands': return '🜂'; 
-      case 'Pentacles': return '🜃'; 
-      default: return '★';
-    }
-  }
 
   getRomanNumeral(id: number): string {
     if (id > 21) return ''; 
