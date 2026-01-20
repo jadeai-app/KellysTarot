@@ -1,4 +1,3 @@
-
 import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TarotCard } from '../services/tarot.service';
@@ -31,6 +30,9 @@ import { TarotCard } from '../services/tarot.service';
 
         <!-- CARD FRONT -->
         <div class="absolute w-full h-full backface-hidden rotate-y-180 rounded-xl bg-[#F5F1E8] text-[#2D1B4E] overflow-hidden border-[4px] border-[#D4AF37] flex flex-col shadow-2xl">
+           <!-- Holographic Sheen Layer -->
+           <div class="absolute inset-0 z-30 opacity-20 pointer-events-none group-hover:opacity-40 transition-opacity duration-700 bg-[linear-gradient(110deg,transparent_25%,rgba(255,255,255,0.4)_50%,transparent_75%)] bg-[length:250%_100%] animate-[holo-sheen_3s_linear_infinite]"></div>
+           
            <div class="absolute inset-1 border border-[#2D1B4E]/20 rounded-lg pointer-events-none z-20"></div>
 
            <!-- Art Section -->
@@ -84,6 +86,10 @@ import { TarotCard } from '../services/tarot.service';
     }
     .animate-flip-reveal {
       animation: flip-reveal-3d 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    @keyframes holo-sheen {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
     }
   `]
 })
