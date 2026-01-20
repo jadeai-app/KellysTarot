@@ -1,5 +1,7 @@
 {
-  "name": "Copy of Kelly's Tarot",
-  "description": "A mystical, no-code style tarot reader featuring the 'Wisdom of Yah' deck interpretations and AI-powered guidance.",
-  "requestFramePermissions": []
+  "name": "Kelly's Tarot - Wisdom of Yah",
+  "description": "A mystical tarot reader featuring AI-powered interpretations, image generation, and physical card scanning.",
+  "requestFramePermissions": [
+    "camera"
+  ]
 }
