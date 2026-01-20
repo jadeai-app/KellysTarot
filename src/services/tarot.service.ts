@@ -71,7 +71,7 @@ export class TarotService {
 
   async generateCardImage(card: TarotCard): Promise<string> {
     try {
-      const prompt = `A mystical tarot card design illustration for "${card.traditionalName}". Highly detailed occult symbolism, gold filigree line art borders, ethereal glowing cosmic energy background. Professional oracle deck aesthetic, 4k resolution, surreal spiritual art. Deep royal colors. Keywords: ${card.keywords.join(', ')}.`;
+      const prompt = `A mystical tarot card design illustration for "${card.traditionalName}". Detailed occult symbolism, gold filigree line art borders, ethereal glowing cosmic energy, deep holographic color palette. Professional oracle deck aesthetic, 4k resolution, surreal spiritual art. Keywords: ${card.keywords.join(', ')}.`;
       
       const response = await this.ai.models.generateImages({
         model: 'imagen-4.0-generate-001',
@@ -87,7 +87,6 @@ export class TarotService {
       return `data:image/jpeg;base64,${base64ImageBytes}`;
     } catch (error) {
       console.error("Image generation failed:", error);
-      // Fallback seed-based image
       return `https://picsum.photos/seed/tarot-${card.id}/600/900`;
     }
   }
