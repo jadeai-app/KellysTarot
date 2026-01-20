@@ -24,9 +24,6 @@ export default defineConfig(({ mode }) => {
     },
     optimizeDeps: {
       include: ['@angular/common', '@angular/core', 'rxjs']
-    },
-    server: {
-      port: 3000
     }
   };
 });
