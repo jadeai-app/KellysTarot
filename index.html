@@ -12,7 +12,7 @@
     body {
       background-color: #030205;
       color: #F5F1E8;
-      overflow: hidden; 
+      overflow-x: hidden;
       -webkit-tap-highlight-color: transparent;
     }
 
@@ -101,6 +101,9 @@
       0% { background-position: 200% 0; }
       100% { background-position: -200% 0; }
     }
+    
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 <script type="importmap">
 {
@@ -130,27 +133,29 @@
   
   <script>
     const container = document.getElementById('starfield');
-    const starCount = 80;
-    const fragment = document.createDocumentFragment();
-    for (let i = 0; i < starCount; i++) {
-      const star = document.createElement('div');
-      star.classList.add('star');
-      const x = Math.random() * 100;
-      const y = Math.random() * 100;
-      const size = Math.random() * 1.5 + 0.5;
-      const duration = Math.random() * 3 + 2;
-      const delay = Math.random() * 5;
-      const opacity = Math.random() * 0.7 + 0.3;
-      star.style.left = `${x}%`;
-      star.style.top = `${y}%`;
-      star.style.width = `${size}px`;
-      star.style.height = `${size}px`;
-      star.style.setProperty('--duration', `${duration}s`);
-      star.style.setProperty('--delay', `${delay}s`);
-      star.style.setProperty('--opacity', opacity);
-      fragment.appendChild(star);
+    if (container) {
+      const starCount = 80;
+      const fragment = document.createDocumentFragment();
+      for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        const size = Math.random() * 1.5 + 0.5;
+        const duration = Math.random() * 3 + 2;
+        const delay = Math.random() * 5;
+        const opacity = Math.random() * 0.7 + 0.3;
+        star.style.left = `${x}%`;
+        star.style.top = `${y}%`;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.setProperty('--duration', `${duration}s`);
+        star.style.setProperty('--delay', `${delay}s`);
+        star.style.setProperty('--opacity', opacity);
+        fragment.appendChild(star);
+      }
+      container.appendChild(fragment);
     }
-    container.appendChild(fragment);
   </script>
   <app-root></app-root>
   <script type="module" src="/index.tsx"></script>

@@ -239,25 +239,7 @@
       }
     }
 
-    <!-- SHUFFLE / SELECT / READING FLOW ... (Restores remaining states similarly) -->
-    
-    @if (currentState() === 'question') {
-      <div class="flex-grow flex flex-col items-center justify-center px-4 animate-enter">
-        <div class="w-full max-w-lg">
-          <h2 class="font-cinzel text-3xl md:text-5xl text-[#D4AF37] text-center mb-8">Your Intention</h2>
-          <div class="glass-panel p-8 rounded-3xl border border-[#D4AF37]/30">
-            <textarea [(ngModel)]="question" rows="4" 
-              placeholder="Concentrate on your path..."
-              class="w-full bg-black/40 border border-[#D4AF37]/20 rounded-xl p-4 text-[#F5F1E8] outline-none focus:border-[#D4AF37] transition-all resize-none"></textarea>
-            <button (click)="startShuffle()" 
-              class="w-full mt-6 bg-gradient-to-r from-[#D4AF37] to-[#B8860B] text-black font-cinzel font-bold py-4 rounded-xl shadow-lg active:scale-95 transition-all">
-              Consult the Deck
-            </button>
-          </div>
-        </div>
-      </div>
-    }
-
+    <!-- SHUFFLE SCREEN -->
     @if (currentState() === 'shuffle') {
       <div class="flex-grow flex flex-col items-center justify-center relative w-full select-none" (click)="interactShuffle()">
         <h3 class="absolute top-12 font-cinzel text-2xl text-[#D4AF37] animate-pulse">Infusing Energy... {{ shuffleProgress() }}%</h3>
@@ -275,10 +257,11 @@
       </div>
     }
 
+    <!-- SELECT SCREEN -->
     @if (currentState() === 'select') {
       <div class="w-full max-w-7xl mx-auto flex flex-col items-center px-4 animate-enter">
         <h2 class="font-cinzel text-2xl md:text-4xl text-center mb-12">Select <span class="text-[#D4AF37]">{{ cardsRemaining() }}</span> Card(s)</h2>
-        <div class="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-12 gap-2 md:gap-4 w-full">
+        <div class="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-12 gap-2 md:gap-4 w-full mb-12">
           @for (card of deck(); track card.id; let i = $index) {
             <div (click)="onCardSelect(card)"
                  class="aspect-[2/3] bg-[#1a0f2e] border border-[#D4AF37]/40 rounded-lg cursor-pointer hover:-translate-y-2 transition-all shadow-md active:scale-90"
@@ -286,9 +269,11 @@
             </div>
           }
         </div>
+        <button (click)="reshuffleGrid()" class="px-8 py-3 border border-[#D4AF37]/40 rounded-full font-cinzel text-[#D4AF37] text-xs uppercase tracking-widest hover:bg-[#D4AF37]/10 transition-all">Reshuffle Field</button>
       </div>
     }
 
+    <!-- READING SCREEN -->
     @if (currentState() === 'reading') {
       <div class="w-full max-w-7xl mx-auto px-4 animate-enter">
         <div class="flex flex-wrap justify-center gap-8 md:gap-16 mb-20">
@@ -298,7 +283,7 @@
               <div class="w-64 h-96 relative">
                 <app-card [card]="card" [revealed]="revealedCards().has(card.id)" [animateFlip]="true"></app-card>
               </div>
-              <span class="text-2xl font-cinzel text-glow" [class.opacity-0]="!revealedCards().has(card.id)">{{ card.title }}</span>
+              <span class="text-2xl font-cinzel text-[#D4AF37]" [class.opacity-0]="!revealedCards().has(card.id)">{{ card.title }}</span>
             </div>
           }
         </div>
@@ -318,6 +303,24 @@
             }
           </div>
         }
+      </div>
+    }
+
+    <!-- QUESTION SCREEN -->
+    @if (currentState() === 'question') {
+      <div class="flex-grow flex flex-col items-center justify-center px-4 animate-enter">
+        <div class="w-full max-w-lg">
+          <h2 class="font-cinzel text-3xl md:text-5xl text-[#D4AF37] text-center mb-8">Your Intention</h2>
+          <div class="glass-panel p-8 rounded-3xl border border-[#D4AF37]/30">
+            <textarea [(ngModel)]="question" rows="4" 
+              placeholder="Concentrate on your path..."
+              class="w-full bg-black/40 border border-[#D4AF37]/20 rounded-xl p-4 text-[#F5F1E8] outline-none focus:border-[#D4AF37] transition-all resize-none"></textarea>
+            <button (click)="startShuffle()" 
+              class="w-full mt-6 bg-gradient-to-r from-[#D4AF37] to-[#B8860B] text-black font-cinzel font-bold py-4 rounded-xl shadow-lg active:scale-95 transition-all">
+              Consult the Deck
+            </button>
+          </div>
+        </div>
       </div>
     }
   </main>

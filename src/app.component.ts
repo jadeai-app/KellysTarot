@@ -132,7 +132,7 @@ export class AppComponent {
     this.isLoadingAI.set(true);
     
     const shuffled = this.tarotService.shuffle(this.tarotService.getDeck());
-    const cards = shuffled.slice(0, 3); // Pick 3 relevant cards for a physical scan
+    const cards = shuffled.slice(0, 3);
     this.selectedCards.set(cards);
 
     for (let i = 0; i < cards.length; i++) {
