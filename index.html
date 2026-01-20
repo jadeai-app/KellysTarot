@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +14,7 @@
     body {
       background-color: #030205; /* True Void Black */
       color: #F5F1E8;
-      overflow: hidden; /* App container handles scrolling */
+      overflow: hidden; 
       -webkit-tap-highlight-color: transparent;
     }
 
@@ -28,32 +29,28 @@
     ::-webkit-scrollbar-thumb {
       background: rgba(212, 175, 55, 0.3); 
       border-radius: 4px;
-      transition: background 0.3s;
     }
     ::-webkit-scrollbar-thumb:hover {
       background: rgba(212, 175, 55, 0.8); 
     }
     
-    /* Utility: Hide Scrollbar but keep functionality */
     .no-scrollbar::-webkit-scrollbar {
       display: none;
     }
     .no-scrollbar {
-      -ms-overflow-style: none;  /* IE and Edge */
-      scrollbar-width: none;  /* Firefox */
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
 
     .font-cinzel { font-family: 'Cinzel', serif; }
     .font-lato { font-family: 'Lato', sans-serif; }
     
-    /* 3D Context */
     .perspective-1000 { perspective: 1000px; }
     .perspective-2000 { perspective: 2000px; }
     .transform-style-3d { transform-style: preserve-3d; }
     .backface-hidden { backface-visibility: hidden; }
     .rotate-y-180 { transform: rotateY(180deg); }
     
-    /* Atmospheric Background Layers */
     .bg-nebula {
       position: fixed;
       top: -50%; left: -50%; width: 200%; height: 200%;
@@ -64,7 +61,6 @@
       pointer-events: none;
     }
 
-    /* Film Grain */
     .bg-noise {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -75,7 +71,6 @@
       mix-blend-mode: screen;
     }
     
-    /* Starfield */
     .stars-container {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -91,7 +86,6 @@
       animation-delay: var(--delay);
     }
 
-    /* Animations */
     @keyframes nebula-drift {
       0% { transform: rotate(0deg) scale(1); }
       50% { transform: rotate(180deg) scale(1.1); }
@@ -130,23 +124,16 @@
       50% { box-shadow: 0 0 40px rgba(212, 175, 55, 0.5); }
     }
     
-    /* Text Effects */
     .text-glow { text-shadow: 0 0 15px rgba(212, 175, 55, 0.4), 0 0 30px rgba(212, 175, 55, 0.1); }
     .text-glow-strong { text-shadow: 0 0 20px rgba(212, 175, 55, 0.8), 0 0 50px rgba(212, 175, 55, 0.4); }
     
-    /* Holographic sheen for text */
     @keyframes holo-sheen {
       0% { background-position: 200% 0; }
       100% { background-position: -200% 0; }
     }
 
-    /* Entrance Animations */
     .animate-enter { animation: enter 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; }
     .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; opacity: 0; }
-    .delay-100 { animation-delay: 100ms; }
-    .delay-200 { animation-delay: 200ms; }
-    .delay-300 { animation-delay: 300ms; }
-    .delay-500 { animation-delay: 500ms; }
     
     @keyframes enter {
       from { opacity: 0; transform: translateY(15px) scale(0.98); }
@@ -157,19 +144,12 @@
       to { opacity: 1; }
     }
 
-    /* Glass Panels */
     .glass-panel {
       background: rgba(20, 15, 35, 0.7);
       backdrop-filter: blur(16px) saturate(140%);
       -webkit-backdrop-filter: blur(16px) saturate(140%);
       border: 1px solid rgba(255, 255, 255, 0.08);
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-    }
-    
-    /* Accessibility */
-    :focus-visible {
-      outline: 2px solid #D4AF37;
-      outline-offset: 4px;
     }
   </style>
 <script type="importmap">
@@ -181,14 +161,14 @@
     "rxjs/webSocket": "https://esm.sh/rxjs@^7.8.2/webSocket?conditions=es2015",
     "rxjs/testing": "https://esm.sh/rxjs@^7.8.2/testing?conditions=es2015",
     "rxjs/fetch": "https://esm.sh/rxjs@^7.8.2/fetch?conditions=es2015",
-    "@angular/compiler": "https://esm.sh/@angular/compiler@^21.1.0?external=rxjs",
-    "@angular/platform-browser": "https://esm.sh/@angular/platform-browser@^21.1.0?external=rxjs",
-    "@angular/core": "https://esm.sh/@angular/core@^21.1.0?external=rxjs",
-    "@google/genai": "https://esm.sh/@google/genai@^1.37.0?external=rxjs",
-    "@angular/common": "https://esm.sh/@angular/common@^21.1.0?external=rxjs",
-    "@angular/forms": "https://esm.sh/@angular/forms@^21.1.0?external=rxjs",
     "vite": "https://esm.sh/vite@^7.3.1?external=rxjs",
-    "@analogjs/vite-plugin-angular": "https://esm.sh/@analogjs/vite-plugin-angular@^2.2.2?external=rxjs"
+    "@analogjs/vite-plugin-angular": "https://esm.sh/@analogjs/vite-plugin-angular@^2.2.2?external=rxjs",
+    "@angular/compiler": "https://esm.sh/@angular/compiler@^21.1.0?external=rxjs",
+    "@angular/common": "https://esm.sh/@angular/common@^21.1.0?external=rxjs",
+    "@google/genai": "https://esm.sh/@google/genai@^1.37.0?external=rxjs",
+    "@angular/forms": "https://esm.sh/@angular/forms@^21.1.0?external=rxjs",
+    "@angular/platform-browser": "https://esm.sh/@angular/platform-browser@^21.1.0?external=rxjs",
+    "@angular/core": "https://esm.sh/@angular/core@^21.1.0?external=rxjs"
   }
 }
 </script>
@@ -199,7 +179,6 @@
   <div class="bg-noise"></div>
   
   <script>
-    // Optimized Starfield
     const container = document.getElementById('starfield');
     const starCount = 80;
     const fragment = document.createDocumentFragment();
@@ -227,6 +206,6 @@
     container.appendChild(fragment);
   </script>
   <app-root></app-root>
-  <script type="module" src="/src/main.ts"></script>
+  <script type="module" src="/index.tsx"></script>
 </body>
 </html>
