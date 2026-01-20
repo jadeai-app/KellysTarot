@@ -1,4 +1,3 @@
-
 import { Injectable } from '@angular/core';
 import { GoogleGenAI } from "@google/genai";
 
@@ -48,7 +47,6 @@ export class TarotService {
     { id: 19, title: "Big D*ck Energy", traditionalName: "The Sun", suit: "Major", keywords: ["Joy", "Success", "Vitality"], meaning: "It's all good. The lights are green, the music is loud, and you are vibrating at a frequency that annoys sad people. This is pure, unadulterated joy. Everything you touch turns to gold right now. Soak it up.", isReversed: false },
     { id: 20, title: "The Group Chat Leak", traditionalName: "Judgement", suit: "Major", keywords: ["Rebirth", "Absolution", "Wake Up"], meaning: "Everything is coming to light. The trumpet is sounding. This is your final performance review. Forgive yourself, shed the old skin, and answer the call to a higher vibration. Are you going to ascend, or keep playing small?", isReversed: false },
     { id: 21, title: "Level Up", traditionalName: "The World", suit: "Major", keywords: ["Completion", "Wholeness", "Travel"], meaning: "Cycle complete. You won the game. Take a victory lap, acknowledge how far you've come, and prepare to start the next level at zero again. The world is literally at your feet. Dance in the center of the universe and feel the closure.", isReversed: false }
-    // Note: Minor Arcana truncated for space but would follow the same pattern in full app
   ];
 
   private ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
@@ -73,67 +71,56 @@ export class TarotService {
 
   async generateCardImage(card: TarotCard): Promise<string> {
     try {
-      const prompt = `A highly detailed, mystical tarot card illustration for "${card.traditionalName}" (also known as ${card.title}). 
-      Style: Divine cosmic aesthetic, intricate gold filigree, deep mystical colors, glowing ethereal energy. 
-      Keywords: ${card.keywords.join(', ')}.
-      The art should be centered and high-contrast, suitable for a professional tarot deck.`;
-
+      const prompt = `A mystical and divine tarot card illustration of "${card.traditionalName}". Highly detailed occult symbolism, gold filigree borders, ethereal glowing cosmic energy background. Intricate line art, professional oracle deck aesthetic, 4k, surreal spiritual art. Keywords: ${card.keywords.join(', ')}.`;
+      
       const response = await this.ai.models.generateImages({
         model: 'imagen-4.0-generate-001',
         prompt: prompt,
         config: {
           numberOfImages: 1,
-          aspectRatio: '3:4'
-        }
+          outputMimeType: 'image/jpeg',
+          aspectRatio: '3:4',
+        },
       });
 
-      const base64Image = response.generatedImages[0].image.imageBytes;
-      return `data:image/png;base64,${base64Image}`;
+      const base64ImageBytes: string = response.generatedImages[0].image.imageBytes;
+      return `data:image/jpeg;base64,${base64ImageBytes}`;
     } catch (error) {
       console.error("Image generation failed:", error);
-      // Fallback to a themed placeholder if generation fails
-      return `https://picsum.photos/seed/${card.traditionalName}/600/900`;
+      // Fallback seed-based image
+      return `https://picsum.photos/seed/tarot-${card.id}/600/900`;
     }
   }
 
   async getAIInterpretation(cards: TarotCard[], question: string, spread: SpreadType): Promise<string> {
     try {
       const getPositionLabel = (i: number) => {
-        if (spread === 'single') return 'The Guidance';
+        if (spread === 'single') return 'The Energy';
         if (spread === 'three') {
-           const labels = ['The Foundation (Roots/Past)', 'The Challenge (Current Friction)', 'The Outcome (Future Potential)'];
+           const labels = ['The Roots (Past)', 'The Current (Present)', 'The Potential (Future)'];
            return labels[i] || `Position ${i+1}`;
         }
         return `Position ${i+1}`;
       };
 
       const cardList = cards.map((c, i) => 
-        `${getPositionLabel(i)}: ${c.title} (${c.traditionalName}) - ${c.isReversed ? 'Reversed' : 'Upright'}. Core Meaning: ${c.meaning}`
+        `${getPositionLabel(i)}: ${c.title} (${c.traditionalName}) - ${c.isReversed ? 'Reversed' : 'Upright'}. Meaning: ${c.meaning}`
       ).join('\n');
 
-      const systemPrompt = `Act as a mystical, highly intuitive tarot reader. Provide a profound reading for: "${question || 'A general path check-in'}".
-      Spread: ${spread.toUpperCase()}
-      
-      Cards:
-      ${cardList}
-      
-      Format with Markdown:
-      ## ✧ The Vibe
-      (Summary)
-      ## ✧ The Deep Dive
-      (Synthesis of card flow)
-      ## ✧ The Divine Assignment
-      (Actionable advice)`;
+      const systemInstruction = `You are a mystical, deep, and slightly witty tarot reader. Provide a reading for: "${question || 'A general guidance check'}". Spread: ${spread.toUpperCase()}. Use Markdown headers and emojis.`;
 
       const response = await this.ai.models.generateContent({
         model: 'gemini-2.5-flash',
-        contents: systemPrompt,
+        contents: `Cards drawn:\n${cardList}\n\nProvide a reading.`,
+        config: {
+          systemInstruction: systemInstruction
+        }
       });
 
       return response.text;
     } catch (error) {
       console.error("AI Error:", error);
-      return "The cosmic frequency is static. Please try again.";
+      return "The mystical connection is weak. Please try again.";
     }
   }
 }

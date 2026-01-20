@@ -17,7 +17,7 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Custom Scrollbar - Sleek & Gold */
+    /* Custom Scrollbar */
     ::-webkit-scrollbar {
       width: 4px;
       height: 4px;
@@ -45,7 +45,6 @@
     .font-lato { font-family: 'Lato', sans-serif; }
     
     .perspective-1000 { perspective: 1000px; }
-    .perspective-2000 { perspective: 2000px; }
     .transform-style-3d { transform-style: preserve-3d; }
     .backface-hidden { backface-visibility: hidden; }
     .rotate-y-180 { transform: rotateY(180deg); }
@@ -118,37 +117,17 @@
     }
     .animate-shake { animation: shake-energy 0.5s cubic-bezier(.36,.07,.19,.97) both; }
 
-    @keyframes pulse-aura {
-      0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); }
-      50% { box-shadow: 0 0 40px rgba(212, 175, 55, 0.5); }
-    }
-    
-    .text-glow { text-shadow: 0 0 15px rgba(212, 175, 55, 0.4), 0 0 30px rgba(212, 175, 55, 0.1); }
-    .text-glow-strong { text-shadow: 0 0 20px rgba(212, 175, 55, 0.8), 0 0 50px rgba(212, 175, 55, 0.4); }
-    
-    @keyframes holo-sheen {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-
-    .animate-enter { animation: enter 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; }
-    .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; opacity: 0; }
-    
-    @keyframes enter {
-      from { opacity: 0; transform: translateY(15px) scale(0.98); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
     .glass-panel {
       background: rgba(20, 15, 35, 0.7);
       backdrop-filter: blur(16px) saturate(140%);
       -webkit-backdrop-filter: blur(16px) saturate(140%);
       border: 1px solid rgba(255, 255, 255, 0.08);
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    @keyframes holo-sheen {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
     }
   </style>
 <script type="importmap">

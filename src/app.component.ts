@@ -1,4 +1,3 @@
-
 import { Component, signal, computed, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -41,7 +40,6 @@ export class AppComponent {
   shuffleProgress = signal<number>(0);
   shakeIntensity = signal<number>(0); 
   isGridReshuffling = signal<boolean>(false);
-  shuffleParticles = signal<{id: number, angle: number, distance: number, rotation: number}[]>([]);
 
   maxCards = computed(() => this.selectedSpread() === 'single' ? 1 : 3);
   cardsRemaining = computed(() => this.maxCards() - this.selectedCards().length);
@@ -94,6 +92,15 @@ export class AppComponent {
     }
   }
 
+  reshuffleGrid() {
+    this.isGridReshuffling.set(true);
+    this.vibrate(15);
+    setTimeout(() => {
+      this.deck.set(this.tarotService.shuffle(this.deck()));
+      this.isGridReshuffling.set(false);
+    }, 400);
+  }
+
   onCardSelect(card: TarotCard) {
     if (this.cardsRemaining() > 0 && !this.selectedCards().includes(card)) {
       this.vibrate(15);
@@ -110,9 +117,12 @@ export class AppComponent {
 
     const cards = this.selectedCards();
     
-    // Reveal and Generate Images
+    // Step 1: Sequential Reveal & Parallel Image Generation
     for (let i = 0; i < cards.length; i++) {
       const card = cards[i];
+      
+      // Reveal delay for visuals
+      await new Promise(r => setTimeout(r, 600));
       this.vibrate(20);
       
       this.revealedCards.update(set => {
@@ -121,22 +131,14 @@ export class AppComponent {
         return newSet;
       });
 
-      // Async image generation - trigger immediately
+      // Start image generation in background for this card
       this.tarotService.generateCardImage(card).then(url => {
-        this.selectedCards.update(currentCards => 
-          currentCards.map(c => c.id === card.id ? { ...c, imageUrl: url } : c)
-        );
+        this.selectedCards.update(curr => curr.map(c => c.id === card.id ? { ...c, imageUrl: url } : c));
       });
-
-      await new Promise(r => setTimeout(r, 600));
     }
 
-    const result = await this.tarotService.getAIInterpretation(
-      this.selectedCards(), 
-      this.question(), 
-      this.selectedSpread()
-    );
-    
+    // Step 2: Get AI Interpretation
+    const result = await this.tarotService.getAIInterpretation(this.selectedCards(), this.question(), this.selectedSpread());
     this.aiInterpretation.set(result);
     this.isLoadingAI.set(false);
     this.typewriterEffect(result);
@@ -144,6 +146,7 @@ export class AppComponent {
 
   typewriterEffect(text: string) {
     let i = 0;
+    this.displayedInterpretation.set('');
     const interval = setInterval(() => {
       if (i < text.length) {
         this.displayedInterpretation.set(text.slice(0, i + 3));
@@ -163,11 +166,47 @@ export class AppComponent {
     this.aiInterpretation.set('');
     this.displayedInterpretation.set('');
     this.currentState.set('home');
+    this.isReadingComplete.set(false);
   }
 
   getPositionName(index: number): string {
-    if (this.selectedSpread() === 'single') return 'Current Vibe';
+    if (this.selectedSpread() === 'single') return 'The Energy';
     const names = ['The Foundation', 'The Challenge', 'The Outcome'];
     return names[index] || `Card ${index + 1}`;
+  }
+
+  filteredExploreDeck() {
+    const query = this.searchQuery().toLowerCase();
+    const filter = this.activeFilter();
+    
+    return this.deck().filter(card => {
+      const matchesSearch = card.title.toLowerCase().includes(query) || 
+                            card.traditionalName.toLowerCase().includes(query) ||
+                            card.keywords.some(k => k.toLowerCase().includes(query));
+      const matchesFilter = filter === 'All' || card.suit === filter;
+      return matchesSearch && matchesFilter;
+    });
+  }
+
+  setFilter(filter: string) {
+    this.vibrate(10);
+    this.activeFilter.set(filter);
+  }
+
+  openCardDetail(card: TarotCard) {
+    this.vibrate(15);
+    this.viewingCard.set(card);
+  }
+
+  closeCardDetail() {
+    this.vibrate(5);
+    this.viewingCard.set(null);
+    this.isZoomed.set(false);
+  }
+
+  toggleZoom(e: Event) {
+    e.stopPropagation();
+    this.vibrate(10);
+    this.isZoomed.update(z => !z);
   }
 }
